@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tv_user_not_authorized"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/user_not_authorized"
+        android:textSize="22sp"
+        android:textColor="@color/black"
+        android:gravity="center"
+        android:layout_gravity="center_vertical|center_horizontal"/>
+
+    <Spinner
+        android:id="@+id/spinner_plans_filter"
+        android:layout_width="wrap_content"
+        android:layout_gravity="end"
+        android:visibility="gone"
+        android:entries="@array/plans_filter_options"
+        android:layout_height="wrap_content"
+        android:spinnerMode="dropdown"/>
+
+
+
+    <EditText
+        android:id="@+id/et_filter_date_from"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:ems="10"
+        android:hint="@string/dateFrom"
+        android:visibility="gone" />
+
+    <EditText
+        android:id="@+id/et_filter_date_after"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:visibility="gone"
+        android:layout_gravity="center"
+        android:hint="@string/dateTo"/>
+
+    <Button
+        android:id="@+id/btn_filter_plans"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:text="Фильтровать"
+        android:visibility="gone"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_current_plans"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_height="match_parent"
+        android:padding="10dp" />
+</LinearLayout>

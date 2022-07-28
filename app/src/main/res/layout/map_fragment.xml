@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tv_user_not_authorized"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/user_not_authorized"
+        android:textSize="22sp"
+        android:visibility="gone"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:textAlignment="center"/>
+
+    <TextView
+        android:id="@+id/tv_map_settings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Настройки карты"
+        android:textColor="@color/black"
+        android:textSize="22sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btn_map_mode_regular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="30dp"
+        android:backgroundTint="@color/grey"
+        android:state_selected="false"
+        android:text="Обычный"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_map_settings" />
+
+    <Button
+        android:id="@+id/btn_map_mode_hybrid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:backgroundTint="@color/grey"
+        android:text="@string/hybrid"
+        app:layout_constraintEnd_toStartOf="@+id/btn_map_mode_satellite"
+        app:layout_constraintStart_toEndOf="@+id/btn_map_mode_regular"
+        app:layout_constraintTop_toBottomOf="@+id/tv_map_settings" />
+
+    <Button
+        android:id="@+id/btn_map_mode_satellite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="20dp"
+        android:backgroundTint="@color/grey"
+        android:text="@string/satellite"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_map_settings" />
+
+    <Button
+        android:id="@+id/btn_map_scale_zoomed_in"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:backgroundTint="@color/grey"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="30dp"
+        android:text="@string/ten_num"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_map_mode_regular" />
+
+    <Button
+        android:id="@+id/btn_map_scale_regular"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="30dp"
+        android:backgroundTint="@color/grey"
+        android:text="100"
+        app:layout_constraintEnd_toStartOf="@+id/btn_map_scale_zoomed_out"
+        app:layout_constraintStart_toEndOf="@+id/btn_map_scale_zoomed_in"
+        app:layout_constraintTop_toBottomOf="@+id/btn_map_mode_hybrid" />
+
+    <Button
+        android:id="@+id/btn_map_scale_zoomed_out"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="30dp"
+        android:backgroundTint="@color/grey"
+        android:layout_marginEnd="30dp"
+        android:text="500"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_map_mode_satellite" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

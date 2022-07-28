@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/invisible"
+        android:title=""
+        android:visible="false"
+        />
+
+    <item
+        android:id="@+id/edit_plans"
+        android:title="@string/plans"
+        android:checked="false"
+        android:icon="@drawable/ic_plan"
+        />
+
+    <item
+        android:id="@+id/drones"
+        android:title="@string/drones"
+        android:icon="@drawable/ic_drones"
+        />
+
+    <item
+        android:id="@+id/add_drone"
+        android:title="@string/add_plan"
+        android:icon="@drawable/ic_add"
+        />
+
+    <item
+        android:id="@+id/edit_profile"
+        android:title="@string/profile"
+        android:icon="@drawable/ic_user"
+        />
+
+</menu>

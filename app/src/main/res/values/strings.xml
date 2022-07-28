@@ -1,0 +1,46 @@
+<resources>
+    <string name="app_name">Drones Example</string>
+    <string name="plans">Планы</string>
+    <string name="drones">БВС</string>
+    <string name="serial_number">Серийный номер: %1$s</string>
+    <string name="serial_number_hint">Серийный номер</string>
+    <string name="weight">Вес: %1$d</string>
+    <string name="drone_model">Модель: %1$s</string>
+    <string name="profile">Профиль</string>
+    <string name="add_plan">Ред. планы</string>
+    <string name="add_drone">Добавить БВС</string>
+    <string name="model">Модель</string>
+    <string name="weight_hint">Вес</string>
+    <string name="submit">Подтвердить</string>
+    <string name="cancel">Отменить</string>
+    <string name="current">Текущие</string>
+    <string name="favorite">Избранное</string>
+    <string name="history">История</string>
+    <string name="flight_dates">Период: %1$s — %2$s</string>
+    <string name="hint_profile_name">Имя</string>
+    <string name="hint_profile_lastname">Фамилия</string>
+    <string name="hint_profile_phone">Телефон</string>
+    <string name="hint_profile_birthday">Дата рождения</string>
+    <string name="edit_profile">Редактировать профиль</string>
+    <string name="map">Карта</string>
+    <string name="hybrid">Гибрид</string>
+    <string name="satellite">Спутник</string>
+    <string name="ten_num">10</string>
+    <string name="dateFrom">Дата: от</string>
+    <string name="dateTo">Дата: до</string>
+
+    <string name="shared_preferences_filename">drones_example_main</string>
+    <string name="user_not_authorized">Вы не авторизованы. Войдите в аккаунт во вкладке профиля.</string>
+    <string name="log_in">Вход</string>
+    <string name="log_into_account">Войти в аккаунт</string>
+    <string name="username">Имя пользователя</string>
+    <string name="password">Пароль</string>
+    <string name="log_out">Выйти из профиля</string>
+
+    <string-array name="plans_filter_options">
+        <item>Все планы</item>
+        <item>Статус: разрешено</item>
+        <item>Статус: ожидание</item>
+        <item>По дате…</item>
+    </string-array>
+</resources>
