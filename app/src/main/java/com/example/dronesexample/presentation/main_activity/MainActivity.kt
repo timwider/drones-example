@@ -6,12 +6,12 @@ import androidx.activity.viewModels
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
+import androidx.lifecycle.lifecycleScope
 import com.example.dronesexample.R
-import com.example.dronesexample.data.local.PreferencesManager
 import com.example.dronesexample.presentation.home.HomeFragment
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
-
-const val SP_USER_AUTH_KEY = "isUserAuthenticated"
 
 class MainActivity : AppCompatActivity() {
 
@@ -21,14 +21,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val pm = PreferencesManager(applicationContext)
-        val isAuthenticated = pm.getString(SP_USER_AUTH_KEY)!!
-        viewModel.setAuth(isAuthenticated)
+        viewModel.getAuthData()
 
-        viewModel.isUserLoggedIn.observe(this) {
-            if (it == "true") pm.putString(SP_USER_AUTH_KEY, it)
+        supportFragmentManager.commit {
+            replace(R.id.main_fragment_container, HomeFragment(), "HomeFragment")
         }
-
-        supportFragmentManager.commit { replace<HomeFragment>(R.id.main_fragment_container) }
     }
 }

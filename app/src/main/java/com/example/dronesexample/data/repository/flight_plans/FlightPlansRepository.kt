@@ -1,11 +1,11 @@
 package com.example.dronesexample.data.repository.flight_plans
 
+import android.util.Log
 import com.example.dronesexample.data.FirebaseDatabaseReference
-import com.example.dronesexample.models.Drone
+import com.example.dronesexample.data.models.Details
+import com.example.dronesexample.data.models.Drone
 import com.example.dronesexample.data.models.FlightPlans
 import com.example.dronesexample.data.repository.drone.DroneRepository
-import com.example.dronesexample.presentation.plans.mapper.FlightPlansMapper
-import com.example.dronesexample.presentation.plans.mapper.FlightPlansPR
 import com.google.firebase.database.DatabaseReference
 
 class FlightPlansRepository: BaseFlightPlansRepository {
@@ -27,8 +27,12 @@ class FlightPlansRepository: BaseFlightPlansRepository {
         }
     }
 
-    override suspend fun addFlightPlan(flightPlan: FlightPlans, block: (Boolean) -> Unit) {
-        val operation = database.child("flight_plans").child(flightPlan.plan_id.toString()).setValue(flightPlan)
+    override suspend fun addFlightPlan(
+        uuid: String,
+        flightPlan: FlightPlans,
+        block: (Boolean) -> Unit
+    ) {
+        val operation = database.child("flight_plans").child(uuid).setValue(flightPlan)
 
         operation.addOnSuccessListener {
             block.invoke(true)
@@ -39,8 +43,8 @@ class FlightPlansRepository: BaseFlightPlansRepository {
         }
     }
 
-    override suspend fun deleteFlightPlan(flightPlanId: Int, block: (Boolean) -> Unit) {
-        val operation = database.child("flight_plans").child(flightPlanId.toString()).removeValue()
+    override suspend fun deleteFlightPlan(uuid: String, block: (Boolean) -> Unit) {
+        val operation = database.child("flight_plans").child(uuid).removeValue()
 
         operation.addOnSuccessListener {
             block.invoke(true)
@@ -51,10 +55,9 @@ class FlightPlansRepository: BaseFlightPlansRepository {
         }
     }
 
-    override suspend fun getFlightPlanDrone(flightPlanId: Int, block: (Drone) -> Unit) {
-        database.child("flight_plans").child(flightPlanId.toString()).child("drone").get().addOnSuccessListener {
-            val value = it.getValue(Int::class.java)
-            database.child("drones").orderByChild("drone_id").equalTo(it.toString())
+    override suspend fun getFlightPlanDrone(droneUUID: String, block: (Drone) -> Unit) {
+        droneRepository.getDroneById(droneUUID) {
+            block.invoke(it)
         }
     }
 
@@ -62,4 +65,30 @@ class FlightPlansRepository: BaseFlightPlansRepository {
         return FirebaseDatabaseReference.get()
     }
 
+    override suspend fun deleteDronePlans(droneUUID: String) {
+        val operation = database.child("flight_plans").orderByChild("droneUUID").equalTo(droneUUID).get()
+
+        operation.addOnSuccessListener { snap ->
+            snap.children.forEach { it.ref.removeValue() }
+        }
+    }
+
+    override suspend fun getFlightDetailsId(droneUUID: String, block: (String) -> Unit) {
+        val operation =
+            database.child("flight_plans").orderByChild("droneUUID").equalTo(droneUUID).get()
+        operation.addOnSuccessListener { snap ->
+            snap.children.forEach { flightPlan ->
+                flightPlan.getValue(FlightPlans::class.java)?.let {
+                    block.invoke(it.details_id!!)
+                }
+            }
+        }
+    }
+
+    override suspend fun toggleFavorite(newStatus: Boolean, detailsId: String, block: (Boolean) -> Unit) {
+        Log.d("FIREBASE_TESTING_NEW", "inside repo function")
+        database.child("details").child(detailsId).child("favorites").setValue(newStatus)
+
+
+    }
 }

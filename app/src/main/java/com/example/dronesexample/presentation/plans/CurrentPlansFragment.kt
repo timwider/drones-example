@@ -11,6 +11,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.dronesexample.R
 import com.example.dronesexample.databinding.CurrentPlansFragmentBinding
+import com.example.dronesexample.presentation.home.HomeViewModel
 import com.example.dronesexample.presentation.main_activity.MainViewModel
 import com.example.dronesexample.presentation.plans.adapter.CurrentPlansAdapter
 
@@ -19,29 +20,30 @@ class CurrentPlansFragment: Fragment(R.layout.current_plans_fragment) {
     private val plansViewModel: PlansViewModel by activityViewModels()
     private val binding: CurrentPlansFragmentBinding by lazy { initBinding() }
     private val mainViewModel: MainViewModel by activityViewModels()
+    private val homeViewModel: HomeViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         mainViewModel.isUserLoggedIn.observe(viewLifecycleOwner) {
-            if (it == "false") hideLayout()
-            if (it == "true") showLayout()
+            if (it) showLayout() else hideLayout()
         }
 
         val currentPlansAdapter = CurrentPlansAdapter { flightPlansPR ->
-            if (flightPlansPR.isFavorite != null) {
-                flightPlansPR.isFavorite = !flightPlansPR.isFavorite!!
-            } else flightPlansPR.isFavorite = true
+            plansViewModel.toggleFavorite(flightPlansPR.isFavorite!!, flightPlansPR.detailsId!!)
+            flightPlansPR.isFavorite = !flightPlansPR.isFavorite!!
         }
 
-        binding.rvCurrentPlans.apply {
-            adapter = currentPlansAdapter
-            layoutManager = LinearLayoutManager(requireContext())
+        plansViewModel.visiblePlans.observe(viewLifecycleOwner) { currentPlansAdapter.submitList(it) }
+
+        plansViewModel.allPlansData.observe(viewLifecycleOwner) { flightPlansData ->
+            plansViewModel.loadDetails(flightPlansData, homeViewModel.drones.value!!)
         }
+
+        plansViewModel.loadAllFlightPlans()
+        plansViewModel.loadFavorites()
 
         binding.rvCurrentPlans.adapter = currentPlansAdapter
         binding.rvCurrentPlans.layoutManager = LinearLayoutManager(requireContext())
-
-        plansViewModel.visiblePlans.observe(viewLifecycleOwner) { currentPlansAdapter.submitList(it) }
 
         plansViewModel.isSortingByDate.observe(viewLifecycleOwner) {
             val param = if (it) View.VISIBLE else View.GONE
@@ -60,6 +62,11 @@ class CurrentPlansFragment: Fragment(R.layout.current_plans_fragment) {
         super.onViewCreated(view, savedInstanceState)
     }
 
+    override fun onResume() {
+        super.onResume()
+
+    }
+
     private fun toggleSortLayoutVisibility(param: Int) {
         binding.etFilterDateFrom.visibility = param
         binding.etFilterDateAfter.visibility = param
@@ -74,7 +81,7 @@ class CurrentPlansFragment: Fragment(R.layout.current_plans_fragment) {
                 position: Int,
                 id: Long
             ) {
-                plansViewModel.onFilterItemSelected(position)
+                plansViewModel.onFilterItemSelected(position, false)
             }
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }

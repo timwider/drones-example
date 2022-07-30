@@ -9,7 +9,7 @@
         />
 
     <item
-        android:id="@+id/edit_plans"
+        android:id="@+id/plans"
         android:title="@string/plans"
         android:checked="false"
         android:icon="@drawable/ic_plan"
@@ -22,7 +22,7 @@
         />
 
     <item
-        android:id="@+id/add_drone"
+        android:id="@+id/add_plan"
         android:title="@string/add_plan"
         android:icon="@drawable/ic_add"
         />

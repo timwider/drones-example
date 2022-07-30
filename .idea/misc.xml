@@ -3,15 +3,18 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/timwi/AndroidStudioProjects/DronesExample/app/src/main/res/drawable/ic_http.xml" value="0.1445" />
         <entry key="..\:/Users/timwi/AndroidStudioProjects/DronesExample/app/src/main/res/layout/activity_main.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/timwi/AndroidStudioProjects/DronesExample/app/src/main/res/layout/current_plans_fragment.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/timwi/AndroidStudioProjects/DronesExample/app/src/main/res/layout/drone_item_view.xml" value="0.4666666666666667" />
         <entry key="..\:/Users/timwi/AndroidStudioProjects/DronesExample/app/src/main/res/layout/edit_drones_fragment.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/timwi/AndroidStudioProjects/DronesExample/app/src/main/res/layout/edit_plans_fragment.xml" value="0.25" />
         <entry key="..\:/Users/timwi/AndroidStudioProjects/DronesExample/app/src/main/res/layout/edit_profile_fragment.xml" value="0.1675929884566054" />
         <entry key="..\:/Users/timwi/AndroidStudioProjects/DronesExample/app/src/main/res/layout/flight_plan_item.xml" value="0.33" />
         <entry key="..\:/Users/timwi/AndroidStudioProjects/DronesExample/app/src/main/res/layout/home_fragment.xml" value="0.21" />
         <entry key="..\:/Users/timwi/AndroidStudioProjects/DronesExample/app/src/main/res/layout/map_fragment.xml" value="0.2" />
         <entry key="..\:/Users/timwi/AndroidStudioProjects/DronesExample/app/src/main/res/layout/plans_fragment.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/timwi/AndroidStudioProjects/DronesExample/app/src/main/res/layout/request_fragment.xml" value="0.1675929884566054" />
         <entry key="..\:/Users/timwi/AndroidStudioProjects/DronesExample/app/src/main/res/menu/home_menu.xml" value="0.20416666666666666" />
       </map>
     </option>

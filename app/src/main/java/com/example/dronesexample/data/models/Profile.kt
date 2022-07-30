@@ -3,8 +3,8 @@ package com.example.dronesexample.data.models
 // should be concatenated with data profile,
 // name is key (only 1 object)
 class Profile(
-    val username: String? = null,
-    val password: String? = null,
+    var username: String? = null,
+    var password: String? = null,
     var email: String? = null,
     var phone: String? = null,
     var first_name: String? = null,

@@ -1,13 +1,16 @@
 package com.example.dronesexample.presentation.drones
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.dronesexample.data.repository.drone.DroneRepository
-import com.example.dronesexample.models.Drone
+import com.example.dronesexample.data.models.Drone
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.*
+import kotlin.random.Random
 
 class DronesViewModel: ViewModel() {
 
@@ -23,12 +26,27 @@ class DronesViewModel: ViewModel() {
     }
 
     private fun sendData(name: String, serial: String, weight: Int, block: (Drone) -> Unit) {
+        val uuid = generateRandomDroneId()
         val drone = Drone(
-            drone_id = (0..1000).random(),
             model = name,
             serial = serial,
-            weight = weight
+            weight = weight,
+            uuid = uuid
         )
-        viewModelScope.launch(Dispatchers.IO) { repository.saveDrone(drone) { result -> block.invoke(drone) } }
+
+        viewModelScope.launch(Dispatchers.IO) { repository.saveDrone(uuid, drone) { result -> block.invoke(drone) } }
+    }
+
+    private fun generateRandomDroneId(): String {
+        val random = Random
+        val letters = "qwertyuiopasdfghklzxcvbnm"
+        var id = ""
+        // if we want ID to be 16 characters
+        for (i in (0..15)) {
+            val letter = letters.random()
+            val num = random.nextInt(10)
+            id += "$letter$num"
+        }
+        return id
     }
 }

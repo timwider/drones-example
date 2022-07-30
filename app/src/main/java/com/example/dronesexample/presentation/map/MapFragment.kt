@@ -61,8 +61,7 @@ class MapFragment: BottomSheetDialogFragment() {
         }
 
         mainViewModel.isUserLoggedIn.observe(viewLifecycleOwner) {
-            if (it == "false") hideLayout()
-            if (it == "true") showLayout()
+            if (it) showLayout() else hideLayout()
         }
     }
 

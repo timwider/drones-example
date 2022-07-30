@@ -4,13 +4,12 @@ import android.os.Parcelable
 import com.example.dronesexample.models.DroneDetails
 import java.io.Serializable
 
-// details should be ids
 // key = drone_id, keys are stored anywhere we need drones
 // fields from DroneDetails = name, reg_no
 class Drone(
+    var uuid: String? = null,
     var name: String? = null,
     var reg_no: String? = null,
-    var drone_id: Int? = null,
     var serial: String? = null,
     var weight: Int? = null,
     var model: String? = null,

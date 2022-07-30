@@ -3,18 +3,35 @@ package com.example.dronesexample.presentation.main_activity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.dronesexample.data.models.Authorization
+import com.example.dronesexample.data.repository.authorization.AuthorizationRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 class MainViewModel: ViewModel() {
 
-    private val _isUserLoggedIn = MutableLiveData<String>()
-    val isUserLoggedIn = _isUserLoggedIn as LiveData<String>
+    private val _isUserLoggedIn = MutableLiveData<Boolean>()
+    val isUserLoggedIn = _isUserLoggedIn as LiveData<Boolean>
 
-    fun onLoginDataReceived() { _isUserLoggedIn.value = "true" }
+    private val authorizationRepository = AuthorizationRepository()
 
-    fun onLogOut() { _isUserLoggedIn.value = "false" }
+    fun onLoginDataReceived() {
+        viewModelScope.launch(Dispatchers.IO) {
+            authorizationRepository.authorize { _isUserLoggedIn.postValue(true) }
+        }
+    }
 
-    fun setAuth(value: String) {
-        _isUserLoggedIn.value = value
+    fun onLogOut() {
+        viewModelScope.launch(Dispatchers.IO) {
+            authorizationRepository.logOut { _isUserLoggedIn.postValue(false) }
+        }
+    }
+
+    fun getAuthData() {
+        viewModelScope.launch(Dispatchers.IO) {
+            authorizationRepository.getAuthStatus { _isUserLoggedIn.postValue(it) }
+        }
     }
 }

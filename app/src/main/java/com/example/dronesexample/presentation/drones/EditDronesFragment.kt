@@ -31,8 +31,7 @@ class EditDronesFragment: BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         mainViewModel.isUserLoggedIn.observe(viewLifecycleOwner) {
-            if (it == "false") hideLayout()
-            if (it == "true") showLayout()
+            if (it) showLayout() else hideLayout()
         }
 
         editDronesViewModel.dataSavedSuccessfully.observe(viewLifecycleOwner) {

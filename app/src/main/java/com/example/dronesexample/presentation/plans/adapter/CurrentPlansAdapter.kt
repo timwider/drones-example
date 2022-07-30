@@ -11,12 +11,12 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dronesexample.R
-import com.example.dronesexample.models.FlightPlans
-import com.example.dronesexample.presentation.plans.mapper.FlightPlansPR
+import com.example.dronesexample.data.models.FlightPlans
+import com.example.dronesexample.data.models.FlightPlansRV
 
 class CurrentPlansAdapter(
-    private val ivFavoriteClickListener: (FlightPlansPR) -> Unit
-):ListAdapter<FlightPlansPR, CurrentPlansAdapter.ViewHolder>(FlightPlansDiffUtilCallback()) {
+    private val ivFavoriteClickListener: (FlightPlansRV) -> Unit
+):ListAdapter<FlightPlansRV, CurrentPlansAdapter.ViewHolder>(FlightPlansDiffUtilCallback()) {
 
     class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         val card: CardView = itemView.findViewById(R.id.root_card_layout)
@@ -34,12 +34,10 @@ class CurrentPlansAdapter(
         val currentItem = getItem(position)
 
         holder.tvFlightDates.text =
-            getRes(holder).getString(R.string.flight_dates, currentItem.period_start, currentItem.period_end)
-        holder.tvDroneModel.text =
-            getRes(holder).getString(R.string.drone_model, currentItem.drone?.model ?: "Drone Not Set")
-        holder.ivFavorite.setOnClickListener { ivFavoriteClickListener(currentItem); notifyItemChanged(position) }
+            getRes(holder).getString(R.string.flight_dates, currentItem.periodStart, currentItem.periodEnd)
+        holder.tvDroneModel.text = currentItem.droneName
 
-        // todo check if isFavorite before setting value
+        holder.ivFavorite.setOnClickListener { ivFavoriteClickListener(currentItem); notifyItemChanged(position) }
         val resId =
             if (currentItem.isFavorite == true) R.drawable.ic_is_favorite else R.drawable.ic_no_favorite
 
@@ -53,11 +51,11 @@ class CurrentPlansAdapter(
 
     private fun getRes(holder: ViewHolder) = holder.card.context.resources
 
-    class FlightPlansDiffUtilCallback: DiffUtil.ItemCallback<FlightPlansPR>() {
-        override fun areItemsTheSame(oldItem: FlightPlansPR, newItem: FlightPlansPR): Boolean =
-            oldItem.plan_id == newItem.plan_id
+    class FlightPlansDiffUtilCallback: DiffUtil.ItemCallback<FlightPlansRV>() {
+        override fun areItemsTheSame(oldItem: FlightPlansRV, newItem: FlightPlansRV): Boolean =
+            oldItem.detailsId == newItem.detailsId
 
-        override fun areContentsTheSame(oldItem: FlightPlansPR, newItem: FlightPlansPR): Boolean =
-            oldItem.plan_id == newItem.plan_id
+        override fun areContentsTheSame(oldItem: FlightPlansRV, newItem: FlightPlansRV): Boolean =
+            oldItem.detailsId == newItem.detailsId
     }
 }

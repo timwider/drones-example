@@ -1,11 +1,16 @@
 package com.example.dronesexample.data.repository.authorization
 
-import com.example.dronesexample.models.Authorization
+import com.example.dronesexample.data.models.Authorization
 
 interface BaseAuthorization {
 
-    fun authorize(username: String, password: String): Boolean
+    fun authorize(block: (Boolean) -> Unit)
 
-    // How do we get this? Token, Role, etc.
+    fun logOut(block: (Boolean) -> Unit)
+
     fun saveAuthCredentials(auth: Authorization, block: (Boolean) -> Unit)
+
+    fun getAuthStatus(block: (Boolean) -> Unit)
+
+    fun logIn(username: String, password: String, block: (Boolean, Boolean) -> Unit)
 }

@@ -23,8 +23,7 @@ class EditProfileFragment: Fragment(R.layout.edit_profile_fragment) {
         super.onViewCreated(view, savedInstanceState)
 
         mainViewModel.isUserLoggedIn.observe(viewLifecycleOwner) {
-            if (it == "false") hideLayout()
-            if (it == "true") showLayout()
+            if (it) showLayout() else hideLayout()
         }
 
         val profileData = homeViewModel.profileData.value
@@ -48,7 +47,7 @@ class EditProfileFragment: Fragment(R.layout.edit_profile_fragment) {
             if (message.isNotEmpty()) Snackbar.make(requireView(), message, Snackbar.LENGTH_SHORT).show()
 
             // if data is ok and user is NOT logged in right now
-            if (status == LoginResult.OK && mainViewModel.isUserLoggedIn.value != "true") {
+            if (status == LoginResult.OK && mainViewModel.isUserLoggedIn.value == false) {
                 mainViewModel.onLoginDataReceived()
                 homeViewModel.resetLoginResult()
                 navigateHome()
@@ -106,7 +105,7 @@ class EditProfileFragment: Fragment(R.layout.edit_profile_fragment) {
     }
 
     private fun navigateHome() {
-        parentFragmentManager.commit { replace<HomeFragment>(R.id.main_fragment_container) }
+        parentFragmentManager.commit { replace(R.id.main_fragment_container, HomeFragment(), "HomeFragment") }
     }
 
     private fun initBinding() = EditProfileFragmentBinding.bind(requireView())

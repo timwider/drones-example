@@ -6,14 +6,17 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.dronesexample.data.repository.drone.DroneRepository
 import com.example.dronesexample.data.repository.profile.ProfileRepository
-import com.example.dronesexample.models.Drone
-import com.example.dronesexample.models.Profile
+import com.example.dronesexample.data.models.Drone
+import com.example.dronesexample.data.models.Profile
+import com.example.dronesexample.data.repository.authorization.AuthorizationRepository
+import com.example.dronesexample.data.repository.details.DetailsRepository
+import com.example.dronesexample.data.repository.flight_plans.FlightPlansRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class HomeViewModel: ViewModel() {
 
-    private val _drones = MutableLiveData<List<Drone>>()
+    private val _drones = MutableLiveData<MutableList<Drone>>()
     val drones = _drones as LiveData<List<Drone>>
 
     private val _profileData = MutableLiveData<Profile>()
@@ -24,11 +27,22 @@ class HomeViewModel: ViewModel() {
 
     private val droneRepository = DroneRepository()
     private val profileRepository = ProfileRepository()
+    private val plansRepository = FlightPlansRepository()
+    private val detailsRepository = DetailsRepository()
+    private val authorizationRepository = AuthorizationRepository()
+
+    fun extractDronesNames(): List<String> {
+        val names = mutableListOf<String>()
+
+        _drones.value?.forEach { names.add(it.model.toString()) }
+
+        return names.toList()
+    }
 
     fun resetLoginResult() { _loginResult.value = LoginResult.NOT_SET }
 
     fun getAllDrones() {
-        viewModelScope.launch(Dispatchers.IO) { droneRepository.getAllDrones { _drones.postValue(it) } }
+        viewModelScope.launch(Dispatchers.IO) { droneRepository.getAllDrones { _drones.postValue(it.toMutableList()) } }
     }
 
     fun addDrone(drone: Drone) {
@@ -62,7 +76,7 @@ class HomeViewModel: ViewModel() {
 
     fun logIn(username: String, password: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            profileRepository.logIn(username, password) { usernameValid, passwordValid ->
+            authorizationRepository.logIn(username, password) { usernameValid, passwordValid ->
                 _loginResult.value = when {
                     !usernameValid -> LoginResult.USERNAME_INVALID
                     usernameValid && !passwordValid -> LoginResult.PASSWORD_INVALID
@@ -74,9 +88,27 @@ class HomeViewModel: ViewModel() {
     }
 
     fun deleteDrone(drone: Drone) {
+
+        val currentDrones = _drones.value!!
+        currentDrones.remove(drone)
+
         viewModelScope.launch(Dispatchers.IO) {
-            droneRepository.deleteDrone(drone.drone_id!!) {}
-            droneRepository.getAllDrones { _drones.postValue(it) }
+            plansRepository.getFlightDetailsId(drone.uuid.toString()) { detailsId ->
+                viewModelScope.launch(Dispatchers.IO) {
+                    detailsRepository.deleteDroneDetails(detailsId) {}
+                }
+
+                viewModelScope.launch(Dispatchers.IO) {
+                    deletePlansAndDrone(drone.uuid.toString())
+                }
+            }
+        }
+    }
+
+    private suspend fun deletePlansAndDrone(droneId: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            plansRepository.deleteDronePlans(droneId)
+            viewModelScope.launch(Dispatchers.IO) { droneRepository.deleteDrone(droneId) {} }
         }
     }
 }

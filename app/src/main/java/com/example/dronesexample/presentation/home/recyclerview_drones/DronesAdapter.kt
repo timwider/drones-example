@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dronesexample.R
-import com.example.dronesexample.models.Drone
+import com.example.dronesexample.data.models.Drone
 
 class DronesAdapter(
     private val longClickListener: (Drone) -> Unit
@@ -43,9 +43,8 @@ class DronesAdapter(
 
     class DronesDiffUtilCallback: DiffUtil.ItemCallback<Drone>() {
         override fun areItemsTheSame(oldItem: Drone, newItem: Drone): Boolean =
-            oldItem.drone_id == newItem.drone_id
-
+            oldItem.serial == newItem.serial
         override fun areContentsTheSame(oldItem: Drone, newItem: Drone): Boolean =
-            oldItem.drone_id == newItem.drone_id
+            oldItem.serial == newItem.serial
     }
 }

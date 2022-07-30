@@ -1,14 +1,15 @@
 package com.example.dronesexample.data.repository.profile
 
 import com.example.dronesexample.data.FirebaseDatabaseReference
-import com.example.dronesexample.models.Profile
+import com.example.dronesexample.data.models.Authorization
+import com.example.dronesexample.data.models.Profile
+import com.google.firebase.database.DatabaseReference
 
 class ProfileRepository: BaseProfileRepository {
 
-    private val database = FirebaseDatabaseReference.get()
+    private val database =  FirebaseDatabaseReference.get()
 
     override suspend fun getProfileData(token: String, block: (Profile) -> Unit) {
-        // sample data
         val profile = Profile()
 
         database.child("profile").get().addOnSuccessListener { snap ->
@@ -21,6 +22,8 @@ class ProfileRepository: BaseProfileRepository {
                 profile.email_confirmed = it.email_confirmed
                 profile.phone_confirmed = it.phone_confirmed
                 profile.photo = it.photo
+                profile.username = it.username
+                profile.password = it.password
             }
             block.invoke(profile)
         }
@@ -29,13 +32,5 @@ class ProfileRepository: BaseProfileRepository {
     override suspend fun saveProfile(profile: Profile): Boolean {
         database.child("profile").setValue(profile)
         return true
-    }
-
-    override suspend fun logIn(username: String, password: String, block: (Boolean, Boolean) -> Unit) {
-        database.child("profile").get().addOnSuccessListener { snap ->
-            snap.getValue(com.example.dronesexample.data.models.Profile::class.java)?.let {
-                block.invoke(username == it.username, password == it.password)
-            }
-        }
     }
 }

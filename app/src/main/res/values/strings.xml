@@ -36,6 +36,7 @@
     <string name="username">Имя пользователя</string>
     <string name="password">Пароль</string>
     <string name="log_out">Выйти из профиля</string>
+    <string name="name">Название</string>
 
     <string-array name="plans_filter_options">
         <item>Все планы</item>
