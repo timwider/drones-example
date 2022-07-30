@@ -10,13 +10,14 @@ import com.example.dronesexample.presentation.home.HomeFragment
 import com.example.dronesexample.presentation.home.HomeViewModel
 import com.example.dronesexample.presentation.home.LoginResult
 import com.example.dronesexample.presentation.main_activity.MainViewModel
+import com.example.dronesexample.presentation.navigation.Destination
+import com.example.dronesexample.presentation.navigation.NavigationManager
 import com.google.android.material.snackbar.Snackbar
 
 class EditProfileFragment: Fragment(R.layout.edit_profile_fragment) {
 
     private val binding: EditProfileFragmentBinding by lazy { initBinding() }
     private val homeViewModel: HomeViewModel by activityViewModels()
-    private val editProfileViewModel: EditProfileViewModel by viewModels()
     private val mainViewModel: MainViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -105,7 +106,7 @@ class EditProfileFragment: Fragment(R.layout.edit_profile_fragment) {
     }
 
     private fun navigateHome() {
-        parentFragmentManager.commit { replace(R.id.main_fragment_container, HomeFragment(), "HomeFragment") }
+        NavigationManager(parentFragmentManager).navigate(Destination.HOME)
     }
 
     private fun initBinding() = EditProfileFragmentBinding.bind(requireView())

@@ -49,7 +49,6 @@ class HomeFragment: Fragment(R.layout.home_fragment) {
         binding.rvDrones.layoutManager = LinearLayoutManager(requireContext())
 
         homeViewModel.drones.observe(viewLifecycleOwner) { drones ->
-            drones.forEach { Log.d("taggg", it.serial.toString()) }
             dronesAdapter.submitList(drones)
         }
         homeViewModel.profileData.observe(viewLifecycleOwner) { profile -> setDataFromProfile(profile) }

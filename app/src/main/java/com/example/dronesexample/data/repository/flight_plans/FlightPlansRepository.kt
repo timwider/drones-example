@@ -86,9 +86,6 @@ class FlightPlansRepository: BaseFlightPlansRepository {
     }
 
     override suspend fun toggleFavorite(newStatus: Boolean, detailsId: String, block: (Boolean) -> Unit) {
-        Log.d("FIREBASE_TESTING_NEW", "inside repo function")
         database.child("details").child(detailsId).child("favorites").setValue(newStatus)
-
-
     }
 }

@@ -15,6 +15,7 @@ import com.example.dronesexample.data.models.FlightPlans
 import com.example.dronesexample.data.models.FlightPlansRV
 
 class CurrentPlansAdapter(
+    private val isForFavorites: Boolean,
     private val ivFavoriteClickListener: (FlightPlansRV) -> Unit
 ):ListAdapter<FlightPlansRV, CurrentPlansAdapter.ViewHolder>(FlightPlansDiffUtilCallback()) {
 
@@ -37,7 +38,10 @@ class CurrentPlansAdapter(
             getRes(holder).getString(R.string.flight_dates, currentItem.periodStart, currentItem.periodEnd)
         holder.tvDroneModel.text = currentItem.droneName
 
-        holder.ivFavorite.setOnClickListener { ivFavoriteClickListener(currentItem); notifyItemChanged(position) }
+        holder.ivFavorite.setOnClickListener {
+            ivFavoriteClickListener(currentItem)
+            if (isForFavorites) notifyItemRemoved(position) else notifyItemChanged(position)
+        }
         val resId =
             if (currentItem.isFavorite == true) R.drawable.ic_is_favorite else R.drawable.ic_no_favorite
 

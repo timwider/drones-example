@@ -31,4 +31,6 @@ object HttpUrlConnectionContainer {
     }
 }
 
-class Either<T> (val param: T? = null) { val isResponseError = true }
+class Either<T> (val param: T? = null) {
+    val isResponseError = true
+}

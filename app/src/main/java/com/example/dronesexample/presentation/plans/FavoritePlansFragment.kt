@@ -1,6 +1,7 @@
 package com.example.dronesexample.presentation.plans
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import androidx.core.view.children
@@ -25,11 +26,14 @@ class FavoritePlansFragment: Fragment(R.layout.current_plans_fragment) {
             if (it) showLayout() else hideLayout()
          }
 
-        val currentPlansAdapter = CurrentPlansAdapter { flightPlansPR ->
-            plansViewModel.toggleFavorite(false, flightPlansPR.detailsId!!)
+        val currentPlansAdapter = CurrentPlansAdapter(true) { flightPlansPR ->
+            plansViewModel.toggleFavorite(true, flightPlansPR.detailsId!!)
             flightPlansPR.isFavorite = false
             plansViewModel.removeFavorite(flightPlansPR)
         }
+
+        binding.rvCurrentPlans.adapter = currentPlansAdapter
+        binding.rvCurrentPlans.layoutManager = LinearLayoutManager(requireContext())
 
         plansViewModel.loadFavorites()
 
@@ -47,10 +51,10 @@ class FavoritePlansFragment: Fragment(R.layout.current_plans_fragment) {
             )
         }
 
-        plansViewModel.favoritePlans.observe(viewLifecycleOwner) { currentPlansAdapter.submitList(it) }
-
-        binding.rvCurrentPlans.adapter = currentPlansAdapter
-        binding.rvCurrentPlans.layoutManager = LinearLayoutManager(requireContext())
+        plansViewModel.favoritePlans.observe(viewLifecycleOwner) { plans ->
+            val list = plans.filter { it.isFavorite == true }
+            currentPlansAdapter.submitList(list)
+        }
     }
 
     override fun onResume() {

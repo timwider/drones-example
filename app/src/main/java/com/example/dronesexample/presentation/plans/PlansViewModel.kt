@@ -32,8 +32,6 @@ class PlansViewModel: ViewModel() {
     private val detailsRepository = DetailsRepository()
 
 
-    fun refreshVisiblePlans() { _visiblePlans.value = visiblePlans.value }
-
     fun toggleFavorite(isFavoriteNow: Boolean, detailsId: String) {
         val newValue = !isFavoriteNow
         viewModelScope.launch(Dispatchers.IO) {
@@ -67,7 +65,6 @@ class PlansViewModel: ViewModel() {
     }
 
     fun validateSortByDate(from: String, to: String) {
-        // todo filter date here
         sortPlansByDate(from, to)
     }
 

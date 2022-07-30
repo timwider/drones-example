@@ -28,7 +28,7 @@ class CurrentPlansFragment: Fragment(R.layout.current_plans_fragment) {
             if (it) showLayout() else hideLayout()
         }
 
-        val currentPlansAdapter = CurrentPlansAdapter { flightPlansPR ->
+        val currentPlansAdapter = CurrentPlansAdapter(false) { flightPlansPR ->
             plansViewModel.toggleFavorite(flightPlansPR.isFavorite!!, flightPlansPR.detailsId!!)
             flightPlansPR.isFavorite = !flightPlansPR.isFavorite!!
         }
@@ -64,7 +64,7 @@ class CurrentPlansFragment: Fragment(R.layout.current_plans_fragment) {
 
     override fun onResume() {
         super.onResume()
-
+        binding.rvCurrentPlans.adapter?.notifyDataSetChanged()
     }
 
     private fun toggleSortLayoutVisibility(param: Int) {

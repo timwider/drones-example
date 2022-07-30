@@ -9,6 +9,8 @@ import androidx.fragment.app.replace
 import androidx.lifecycle.lifecycleScope
 import com.example.dronesexample.R
 import com.example.dronesexample.presentation.home.HomeFragment
+import com.example.dronesexample.presentation.navigation.Destination
+import com.example.dronesexample.presentation.navigation.NavigationManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -23,8 +25,6 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.getAuthData()
 
-        supportFragmentManager.commit {
-            replace(R.id.main_fragment_container, HomeFragment(), "HomeFragment")
-        }
+        NavigationManager(supportFragmentManager).navigate(Destination.HOME)
     }
 }

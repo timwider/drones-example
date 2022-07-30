@@ -17,7 +17,6 @@ class RequestFragment: BottomSheetDialogFragment() {
     private val binding: RequestFragmentBinding by lazy { initBinding() }
     private val requestViewModel: RequestViewModel by viewModels()
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
