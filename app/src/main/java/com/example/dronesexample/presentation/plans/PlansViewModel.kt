@@ -8,6 +8,7 @@ import com.example.dronesexample.data.models.FlightPlans
 import com.example.dronesexample.data.models.FlightPlansRV
 import com.example.dronesexample.data.repository.details.DetailsRepository
 import com.example.dronesexample.data.repository.flight_plans.FlightPlansRepository
+import com.example.dronesexample.presentation.plans.validator.PlansDateValidator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -19,8 +20,7 @@ class PlansViewModel: ViewModel() {
     private val _allPlansData = MutableLiveData<List<FlightPlans>>()
     val allPlansData = _allPlansData as LiveData<List<FlightPlans>>
 
-    private val _allPlans = MutableLiveData<List<FlightPlansRV>>()
-    val allPlans = _allPlans as LiveData<List<FlightPlansRV>>
+    private val allPlans = MutableLiveData<List<FlightPlansRV>>()
 
     private val _favoritePlans = MutableLiveData<List<FlightPlansRV>>()
     val favoritePlans = _favoritePlans as LiveData<List<FlightPlansRV>>
@@ -31,6 +31,14 @@ class PlansViewModel: ViewModel() {
     private val plansRepository = FlightPlansRepository()
     private val detailsRepository = DetailsRepository()
 
+    fun onHistoryNotVisible() { _visiblePlans.value = allPlans.value }
+
+    fun loadHistory(validator: PlansDateValidator) {
+        allPlans.value?.let {
+            if (it.isNotEmpty()) _visiblePlans.value = validator.sortFlightPlans(it)
+            Log.d("tagggg", _visiblePlans.value.toString())
+        }
+    }
 
     fun toggleFavorite(isFavoriteNow: Boolean, detailsId: String) {
         val newValue = !isFavoriteNow
@@ -54,7 +62,7 @@ class PlansViewModel: ViewModel() {
     fun loadDetails(plans: List<FlightPlans>, drones: List<Drone>) {
         viewModelScope.launch {
             detailsRepository.getAllDetails { details ->
-                _allPlans.postValue(
+                allPlans.postValue(
                     mapFromData(plans, drones, details)
                 )
                 _visiblePlans.postValue(
@@ -69,7 +77,7 @@ class PlansViewModel: ViewModel() {
     }
 
     private fun sortPlansByDate(from: String, to: String) {
-        _visiblePlans.value = _allPlans.value?.filter {
+        _visiblePlans.value = allPlans.value?.filter {
             it.periodStart == from && it.periodEnd == to
         }
     }
@@ -79,13 +87,13 @@ class PlansViewModel: ViewModel() {
         _isSortingByDate.value = false
 
         val filteredList: List<FlightPlansRV>? = when (item) {
-            FilterItem.ALL -> _allPlans.value
+            FilterItem.ALL -> allPlans.value
 
-            FilterItem.STATUS_ALLOWED -> _allPlans.value?.filter { it.permission == "accepted" }
+            FilterItem.STATUS_ALLOWED -> allPlans.value?.filter { it.permission == "accepted" }
 
-            FilterItem.STATUS_WAITING -> _allPlans.value?.filter { it.permission == "declined" }
+            FilterItem.STATUS_WAITING -> allPlans.value?.filter { it.permission == "declined" }
 
-            FilterItem.BY_DATE -> { _isSortingByDate.value = true; _allPlans.value }
+            FilterItem.BY_DATE -> { _isSortingByDate.value = true; allPlans.value }
         }
 
         items.value = if (areFavorites) filteredList?.filter { it.isFavorite == true } else filteredList
